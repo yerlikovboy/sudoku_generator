@@ -50,10 +50,6 @@ fn generate(n_iter: u32) -> stats::Report {
 
     console::utils::print_console(&puzzle);
 
-    //if is_ok {
-    //    puzzle.grid_as_ref().iter().for_each(|x| print!("{} ", x));
-    //    println!("");
-    //}
     res
 }
 
