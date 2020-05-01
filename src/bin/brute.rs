@@ -1,5 +1,6 @@
 use std::env;
 
+use sudoku::game::actions::Move;
 use sudoku::{console, Cell, Puzzle};
 use sudoku_misc::types::{block, stats};
 use sudoku_misc::utils;
@@ -20,11 +21,12 @@ fn generate(n_iter: u32) -> stats::Report {
     let mut res = stats::Report::new(n_iter);
 
     while res.total_iter < n_iter {
-        let v = utils::picker::pick(&vals[..]);
+        let v = utils::picker::pick(&vals[..]).unwrap();
         let idx = utils::picker::pick(grid_vals.as_slice());
 
-        let c = Cell::from_grid_idx(idx.unwrap()).with_value(v.unwrap());
-        match puzzle.update_cell(&c) {
+        let c = Cell::from_grid_idx(idx.unwrap());
+        let m = Move::new(res.total_iter, c.row, c.column, v);
+        match puzzle.update_cell(&m) {
             Ok(_) => (),
             Err(_) => res.num_errors += 1,
         }

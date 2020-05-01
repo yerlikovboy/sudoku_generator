@@ -43,7 +43,7 @@ impl Block {
 
     /// Returns true if cell is member of this block, false otherwise.
     pub fn is_member(&self, c: &Cell) -> bool {
-        let cell_idx = c.to_grid_idx();
+        let cell_idx = c.as_grid_idx();
         self._members[..].iter().any(|x| *x == cell_idx)
     }
 
@@ -82,7 +82,7 @@ impl Block {
         let y = (c.column as usize / 3) * 3;
 
         let idx_arr = indices(x, y);
-        let c_idx = c.to_grid_idx();
+        let c_idx = c.as_grid_idx();
 
         let mut r_idx: usize = 0;
         for i in idx_arr.iter() {
