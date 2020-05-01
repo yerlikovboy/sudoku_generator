@@ -73,7 +73,7 @@ dependencies = [
 [[package]]
 name = "sudoku"
 version = "0.1.0"
-source = "git+https://github.com/yerlikovboy/sudoku#1abe448e5f501129e3e7fc251ac00de75c54e89f"
+source = "git+https://github.com/yerlikovboy/sudoku#bdfecb4114a5ce483fd80a12cccfd78e7cfd0ed6"
 
 [[package]]
 name = "sudoku_misc"
