@@ -104,7 +104,7 @@ impl Block {
         let mut blanks_idx: Vec<usize> = Vec::new();
 
         self._members.iter().for_each(|x| {
-            let cur_val = p.grid_as_ref()[*x];
+            let cur_val = p.grid()[*x].value().unwrap_or(0);
             if cur_val == 0 {
                 blanks_idx.push(*x);
             }

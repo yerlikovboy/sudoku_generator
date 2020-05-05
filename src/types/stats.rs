@@ -1,5 +1,6 @@
 use std::time::Instant;
 
+use sudoku::Cell;
 pub struct Report {
     pub num_max_iter: u32,
     pub total_iter: u32,
@@ -9,7 +10,7 @@ pub struct Report {
     pub num_overwrites: u32,
     pub is_complete: bool,
     pub is_solvable: bool,
-    pub grid: Vec<u8>,
+    pub grid: Vec<Cell>,
 }
 
 impl Report {
@@ -26,9 +27,9 @@ impl Report {
             grid: Vec::with_capacity(81),
         }
     }
-    pub fn copy_grid(&mut self, grid: &[u8]) -> Result<(), String> {
+    pub fn copy_grid(&mut self, grid: &[Cell]) -> Result<(), String> {
         assert_eq!(grid.len(), 81);
-        (0..81).for_each(|x| self.grid.push(grid[x]));
+        (0..81).for_each(|x| self.grid.push(grid[x].clone()));
         Ok(())
     }
 
@@ -42,7 +43,13 @@ impl Report {
             self.is_solvable,
         );
         if self.is_complete {
-            println!("{:?}", self.grid);
+            println!(
+                "{:?}",
+                self.grid
+                    .iter()
+                    .map(|x| x.value().unwrap_or(0))
+                    .collect::<Vec<u8>>()
+            );
         }
     }
 }

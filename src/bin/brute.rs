@@ -1,6 +1,5 @@
 use std::env;
 
-use sudoku::game::actions::Move;
 use sudoku::{console, Cell, Puzzle};
 use sudoku_misc::types::{block, stats};
 use sudoku_misc::utils;
@@ -24,9 +23,8 @@ fn generate(n_iter: u32) -> stats::Report {
         let v = utils::picker::pick(&vals[..]).unwrap();
         let idx = utils::picker::pick(grid_vals.as_slice());
 
-        let c = Cell::from_grid_idx(idx.unwrap());
-        let m = Move::new(res.total_iter, c.row, c.column, v);
-        match puzzle.update_cell(&m) {
+        let c = Cell::new(idx.unwrap(), v);
+        match puzzle.update_cell(&c) {
             Ok(_) => (),
             Err(_) => res.num_errors += 1,
         }
@@ -46,27 +44,28 @@ fn generate(n_iter: u32) -> stats::Report {
         }
         res.total_iter += 1;
     }
-    res.copy_grid(puzzle.grid_as_ref()).unwrap();
+    res.copy_grid(puzzle.grid()).unwrap();
 
     console::utils::print_puzzle(&puzzle);
 
     res
 }
 
-fn make_puzzle(grid: &[u8], num_clues: u8) -> Puzzle {
+fn make_puzzle(grid: &[Cell], num_clues: u8) -> Puzzle {
     let mut blocks: Vec<block::Block> = Vec::new();
     (1..10).for_each(|x| blocks.push(block::Block::new(x)));
 
     let mut count = 0;
     let mut puzzle: [u8; 81] = [0; 81];
 
+    let vals: [usize; 9] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
     while count < num_clues {
-        let vals: [usize; 9] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         // pick a block number and a cell within that block
         let block_num = utils::picker::pick(&vals).unwrap();
         let block_val = utils::picker::pick(&vals).unwrap();
         let idx = *&blocks[block_num - 1].members()[block_val - 1];
-        puzzle[idx] = grid[idx];
+        puzzle[idx] = grid[idx].value().unwrap_or(0);
         count += 1;
     }
 

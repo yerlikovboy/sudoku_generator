@@ -10,7 +10,7 @@ pub fn get_candidates(c: &Cell, p: &Puzzle) -> Vec<u8> {
     // get values from their peers and remove them
     // from candidates
     for p_idx in c.peers() {
-        let v = p.grid_as_ref()[p_idx];
+        let v = p.grid()[p_idx].value().unwrap_or(0);
 
         if v != 0 {
             mapper[v as usize - 1] = false;
