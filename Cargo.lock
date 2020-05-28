@@ -73,10 +73,10 @@ dependencies = [
 [[package]]
 name = "sudoku"
 version = "0.1.0"
-source = "git+https://github.com/yerlikovboy/sudoku#99abaa2345a2ee477a3ef78f192482edf6870680"
+source = "git+https://github.com/yerlikovboy/sudoku#21fa9b13baaaae6d6fd60804960ecfc9a71e2f55"
 
 [[package]]
-name = "sudoku_misc"
+name = "sudoku_generator"
 version = "0.1.0"
 dependencies = [
  "rand",

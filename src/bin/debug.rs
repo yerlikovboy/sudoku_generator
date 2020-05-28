@@ -1,5 +1,5 @@
 use sudoku::Puzzle;
-use sudoku_misc::types::block;
+use sudoku_generator::types::block;
 fn main() {
     println!("start debug of Block::is_valid");
 
