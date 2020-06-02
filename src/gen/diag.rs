@@ -93,6 +93,6 @@ mod tests {
 
     #[test]
     fn it_works() {
-        generate();
+        generate(1000);
     }
 }
