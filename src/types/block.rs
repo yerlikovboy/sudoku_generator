@@ -1,12 +1,19 @@
 use sudoku::Cell;
 use sudoku::Puzzle;
 
-use crate::utils::candidates;
-
+use crate::utils;
 #[derive(Default, Debug, Clone)]
 pub struct Block {
     pub _id: u8,
     _members: [usize; 9],
+}
+
+fn x_y_from_idx(idx: usize) -> (usize, usize) {
+    (((idx / 9) / 3) * 3, ((idx % 9) / 3) * 3)
+}
+pub fn members_for_idx(idx: usize) -> [usize; 9] {
+    let (x, y) = x_y_from_idx(idx);
+    indices(x, y)
 }
 
 fn indices(x: usize, y: usize) -> [usize; 9] {
@@ -118,7 +125,7 @@ impl Block {
 
         for idx in blanks_idx {
             let c = Cell::from_grid_idx(idx);
-            let cands = candidates::get_candidates(&c, p);
+            let cands = utils::get_candidates(&c, p);
             // block can not be valid if there are no candidates for the empty cell
             if cands.len() == 0 {
                 return false;
