@@ -1,10 +1,10 @@
 use std::env;
 
-use sudoku::{console, Cell, Puzzle};
+use sudoku::console;
 use sudoku_generator::gen::brute;
-use sudoku_generator::types::block;
 use sudoku_generator::utils;
 
+/*
 fn make_puzzle(grid: &[Cell], num_clues: u8) -> Puzzle {
     let mut blocks: Vec<block::Block> = Vec::new();
     (1..10).for_each(|x| blocks.push(block::Block::new(x)));
@@ -25,6 +25,7 @@ fn make_puzzle(grid: &[Cell], num_clues: u8) -> Puzzle {
 
     Puzzle::new(&puzzle[..])
 }
+*/
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -41,7 +42,7 @@ fn main() {
     if grid.is_completed() {
         utils::dump_puzzle(&grid);
         for _ in 0..81 {
-            let puzzle = make_puzzle(grid.grid(), 41);
+            let puzzle = sudoku_generator::make_puzzle(grid.grid(), 41);
             // console::utils::print_puzzle(&puzzle);
             utils::dump_puzzle(&puzzle);
         }
