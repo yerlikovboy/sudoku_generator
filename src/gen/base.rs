@@ -1,12 +1,11 @@
-use crate::types::{block, stats};
+use crate::job::result;
+use crate::types::block;
 use crate::utils;
 use sudoku::{Cell, Puzzle};
 
 use std::collections::HashMap;
 
-pub fn generate(n_iter: u32, starter_grid: &[u8]) -> (stats::Report, Puzzle) {
-    println!("generate puzzle using at most {} iterations", n_iter);
-
+pub fn generate(n_iter: u32, starter_grid: &[u8]) -> result::Report {
     let mut puzzle = Puzzle::new(starter_grid);
 
     // list of possible values
@@ -22,11 +21,12 @@ pub fn generate(n_iter: u32, starter_grid: &[u8]) -> (stats::Report, Puzzle) {
     (1..10).for_each(|x| blocks.push(block::Block::new(x)));
 
     // this is where the results go
-    let mut res = stats::Report::new(n_iter);
+    let mut res = result::Report::new(n_iter);
 
     let mut peers: HashMap<usize, Vec<usize>> = HashMap::new();
+    let mut iter = 0;
 
-    while res.total_iter < n_iter {
+    while iter < n_iter {
         // randomly generate a value (v) and position on the board (idx)
         let v = utils::pick(&vals[..]).unwrap();
         let idx = utils::pick(grid_vals.as_slice()).unwrap();
@@ -39,10 +39,10 @@ pub fn generate(n_iter: u32, starter_grid: &[u8]) -> (stats::Report, Puzzle) {
         if utils::is_ok_with_peers(v, peers.get(&idx).unwrap().as_slice(), &puzzle) {
             match puzzle.update_cell(&c) {
                 Ok(_) => (),
-                Err(_) => res.num_errors += 1,
+                Err(_) => res.incr_error_count(),
             }
         } else {
-            res.num_errors += 1;
+            res.incr_error_count();
         }
 
         let is_solvable = blocks.iter().all(|x| x.is_valid(&puzzle));
@@ -52,15 +52,19 @@ pub fn generate(n_iter: u32, starter_grid: &[u8]) -> (stats::Report, Puzzle) {
         }
 
         if is_solvable != was_solvable {
-            println!(
-                "was_solvable: {},  is_solvable: {}, #iterations: {}",
-                was_solvable, is_solvable, res.total_iter
-            );
+            res.add_state_change(iter, was_solvable, is_solvable);
             was_solvable = is_solvable;
         }
-        res.total_iter += 1;
+        iter += 1;
     }
 
-    res.end();
-    (res, puzzle)
+    res.set_total_iter(iter);
+    let g = puzzle
+        .grid()
+        .iter()
+        .map(|x| x.value().unwrap_or(0))
+        .collect::<Vec<u8>>();
+    res.set_grid(g);
+
+    res
 }

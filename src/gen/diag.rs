@@ -2,11 +2,11 @@
 //
 //
 
-use crate::types::{block, stats};
+use crate::job::result;
+use crate::types::block;
 use crate::utils;
 
 use sudoku::console::utils as sudoku_utils;
-use sudoku::Puzzle;
 
 pub fn remaining_values(b: &[usize], g: &[u8]) -> Vec<u8> {
     let mut m: [bool; 9] = [true; 9];
@@ -24,7 +24,7 @@ pub fn remaining_values(b: &[usize], g: &[u8]) -> Vec<u8> {
         .collect::<Vec<u8>>()
 }
 
-pub fn generate(n_iter: u32) -> (stats::Report, Puzzle) {
+pub fn generate(n_iter: u32) -> result::Report {
     println!("generate diag started.");
 
     let mut grid: [u8; 81] = [0; 81];

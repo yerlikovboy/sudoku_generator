@@ -1,5 +1,6 @@
 pub mod cmd;
 pub mod gen;
+pub mod job;
 pub mod types;
 pub mod utils;
 
