@@ -11,6 +11,7 @@ pub struct Report {
 
     state_changes: Vec<StateChange>,
     grid: Option<Vec<u8>>,
+    puzzle_complete: bool,
 }
 
 impl Report {
@@ -22,6 +23,7 @@ impl Report {
             overwrite_count: 0,
             state_changes: Vec::new(),
             grid: None,
+            puzzle_complete: false,
         }
     }
 
@@ -51,6 +53,15 @@ impl Report {
 
     pub fn set_total_iter(&mut self, n: u32) {
         self.total_iter = n;
+        self.puzzle_complete = self.is_grid_complete();
+    }
+
+    fn is_grid_complete(&self) -> bool {
+        if self.grid.is_none() {
+            return false;
+        }
+
+        self.grid.as_ref().unwrap().iter().all(|x| *x != 0)
     }
 }
 
