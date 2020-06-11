@@ -10,6 +10,7 @@ pub struct Report {
     overwrite_count: u32,
 
     state_changes: Vec<StateChange>,
+    seed: Option<Vec<u8>>,
     grid: Option<Vec<u8>>,
     puzzle_complete: bool,
 }
@@ -22,9 +23,14 @@ impl Report {
             error_count: 0,
             overwrite_count: 0,
             state_changes: Vec::new(),
+            seed: None,
             grid: None,
             puzzle_complete: false,
         }
+    }
+
+    pub fn set_seed(&mut self, seed: Vec<u8>) {
+        self.seed = Some(seed);
     }
 
     pub fn set_grid(&mut self, grid: Vec<u8>) {

@@ -6,7 +6,8 @@ use sudoku_generator::cmd::{Algorithm, Config};
 use sudoku_generator::gen::{brute, diag};
 use sudoku_generator::job::result;
 
-use serde_json;
+use sudoku_generator::console::ConsoleWriter;
+use sudoku_generator::writer::ReportWriter;
 
 fn execute(c: Config) -> result::Report {
     match c.algorithm() {
@@ -20,10 +21,7 @@ fn main() {
     match cmd::parse_args(args) {
         Ok(cfg) => {
             let result = execute(cfg);
-            let r_json = serde_json::to_string(&result).unwrap();
-            //println!("{:?}", result);
-            println!("{}", r_json);
-            // console::utils::print_console(result.grid().unwrap().as_slice(), 9, 9);
+            ConsoleWriter::write(&result);
         }
         Err(_) => println!("usage: generate <alg> <num iterations>"),
     }
