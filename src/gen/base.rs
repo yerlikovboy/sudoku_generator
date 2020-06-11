@@ -5,8 +5,8 @@ use sudoku::{Cell, Puzzle};
 
 use std::collections::HashMap;
 
-pub fn generate(n_iter: u32, starter_grid: &[u8]) -> result::Report {
-    let mut puzzle = Puzzle::new(starter_grid);
+pub fn generate(n_iter: u32, seed: &[u8]) -> result::Report {
+    let mut puzzle = Puzzle::new(seed);
 
     // list of possible values
     let vals: [u8; 9] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -22,6 +22,8 @@ pub fn generate(n_iter: u32, starter_grid: &[u8]) -> result::Report {
 
     // this is where the results go
     let mut res = result::Report::new(n_iter);
+
+    res.set_seed(seed.to_vec());
 
     let mut peers: HashMap<usize, Vec<usize>> = HashMap::new();
     let mut iter = 0;

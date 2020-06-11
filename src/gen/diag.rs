@@ -6,8 +6,6 @@ use crate::job::result;
 use crate::types::block;
 use crate::utils;
 
-use sudoku::console::utils as sudoku_utils;
-
 pub fn remaining_values(b: &[usize], g: &[u8]) -> Vec<u8> {
     let mut m: [bool; 9] = [true; 9];
 
@@ -25,8 +23,6 @@ pub fn remaining_values(b: &[usize], g: &[u8]) -> Vec<u8> {
 }
 
 pub fn generate(n_iter: u32) -> result::Report {
-    println!("generate diag started.");
-
     let mut grid: [u8; 81] = [0; 81];
 
     for i in [0, 30, 60].iter() {
@@ -37,7 +33,6 @@ pub fn generate(n_iter: u32) -> result::Report {
         }
     }
 
-    sudoku_utils::print_console(&grid, 9, 9);
     super::base::generate(n_iter, &grid)
 }
 

@@ -36,14 +36,6 @@ pub fn get_candidates(c: &Cell, p: &Puzzle) -> Vec<u8> {
         .collect::<Vec<u8>>()
 }
 
-pub fn dump_puzzle(p: &Puzzle) {
-    for cell in p.grid() {
-        let val = cell.value().unwrap_or(0);
-        print!("{} ", val);
-    }
-    println!("");
-}
-
 pub fn is_ok_with_peers(val: u8, peers: &[usize], p: &Puzzle) -> bool {
     let p_vals = p.grid();
     for p_idx in peers {

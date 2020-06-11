@@ -4,6 +4,9 @@ pub mod job;
 pub mod types;
 pub mod utils;
 
+pub mod console;
+pub mod writer;
+
 use crate::types::block;
 use sudoku::{Cell, Puzzle};
 
