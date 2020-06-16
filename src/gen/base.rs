@@ -49,24 +49,25 @@ pub fn generate(n_iter: u32, seed: &[u8]) -> result::Report {
 
         let is_solvable = blocks.iter().all(|x| x.is_valid(&puzzle));
 
-        if puzzle.is_completed() {
-            break;
-        }
-
         if is_solvable != was_solvable {
             res.add_state_change(iter, was_solvable, is_solvable);
             was_solvable = is_solvable;
         }
+
+        if puzzle.is_completed() {
+            break;
+        }
+
         iter += 1;
     }
 
-    res.set_total_iter(iter);
     let g = puzzle
         .grid()
         .iter()
         .map(|x| x.value().unwrap_or(0))
         .collect::<Vec<u8>>();
     res.set_grid(g);
+    res.set_total_iter(iter);
 
     res
 }
