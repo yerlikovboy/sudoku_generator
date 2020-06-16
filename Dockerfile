@@ -13,12 +13,6 @@ FROM rust:1.44
 RUN mkdir /app
 RUN ls . 
 COPY --from=build /sudoku_generator/target/release/generate ./app/
-WORKDIR /app
-ENTRYPOINT ["generator"]
-CMD ["diag", "25000"]
 
-
-
-
-
-
+ENTRYPOINT ["/app/generate"]
+CMD ["diag", "50000"]
