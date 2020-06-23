@@ -1,3 +1,4 @@
+use crate::cmd;
 use crate::job::result;
 use crate::types::block;
 use crate::utils;
@@ -5,7 +6,7 @@ use sudoku::{Cell, Puzzle};
 
 use std::collections::HashMap;
 
-pub fn generate(n_iter: u32, seed: &[u8]) -> result::Report {
+pub fn generate(cfg: &cmd::Config, seed: &[u8]) -> result::Report {
     let mut puzzle = Puzzle::new(seed);
 
     // list of possible values
@@ -21,14 +22,14 @@ pub fn generate(n_iter: u32, seed: &[u8]) -> result::Report {
     (1..10).for_each(|x| blocks.push(block::Block::new(x)));
 
     // this is where the results go
-    let mut res = result::Report::new(n_iter);
+    let mut res = result::Report::new(cfg);
 
     res.set_seed(seed.to_vec());
 
     let mut peers: HashMap<usize, Vec<usize>> = HashMap::new();
     let mut iter = 0;
 
-    while iter < n_iter {
+    while iter < cfg.n_iterations() {
         // randomly generate a value (v) and position on the board (idx)
         let v = utils::pick(&vals[..]).unwrap();
         let idx = utils::pick(grid_vals.as_slice()).unwrap();
