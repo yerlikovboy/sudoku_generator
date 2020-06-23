@@ -11,8 +11,8 @@ use sudoku_generator::writer::ReportWriter;
 
 fn execute(c: Config) -> result::Report {
     match c.algorithm() {
-        Algorithm::Brute => brute::generate(c.n_iterations()),
-        Algorithm::Diagonal => diag::generate(c.n_iterations()),
+        Algorithm::Brute => brute::generate(&c),
+        Algorithm::Diagonal => diag::generate(&c),
     }
 }
 

@@ -2,6 +2,7 @@
 //
 //
 
+use crate::cmd;
 use crate::job::result;
 use crate::types::block;
 use crate::utils;
@@ -22,7 +23,7 @@ pub fn remaining_values(b: &[usize], g: &[u8]) -> Vec<u8> {
         .collect::<Vec<u8>>()
 }
 
-pub fn generate(n_iter: u32) -> result::Report {
+pub fn generate(cfg: &cmd::Config) -> result::Report {
     let mut grid: [u8; 81] = [0; 81];
 
     for i in [0, 30, 60].iter() {
@@ -33,7 +34,8 @@ pub fn generate(n_iter: u32) -> result::Report {
         }
     }
 
-    super::base::generate(n_iter, &grid)
+    //super::base::generate(n_iter, &grid)
+    super::base::generate(cfg, &grid)
 }
 
 #[cfg(test)]

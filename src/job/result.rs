@@ -1,10 +1,15 @@
+use crate::cmd::{Algorithm, Config};
 use serde::{Deserialize, Serialize};
+use std::time::SystemTime;
 
-// TODO: need id and timestamps for start, finish.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Report {
+    alg: Algorithm,
+
     max_iter: u32,
     total_iter: u32,
+
+    timestamp_millis: u128,
 
     error_count: u32,
     overwrite_count: u32,
@@ -16,9 +21,9 @@ pub struct Report {
 }
 
 impl Report {
-    pub fn new(max_iter: u32) -> Report {
+    pub fn new(cfg: &Config) -> Report {
         Report {
-            max_iter: max_iter,
+            max_iter: cfg.n_iterations(),
             total_iter: 0,
             error_count: 0,
             overwrite_count: 0,
@@ -26,6 +31,11 @@ impl Report {
             seed: None,
             grid: None,
             puzzle_complete: false,
+            alg: cfg.algorithm(),
+            timestamp_millis: SystemTime::now()
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .unwrap()
+                .as_millis(),
         }
     }
 

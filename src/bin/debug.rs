@@ -1,12 +1,12 @@
 use sudoku::Puzzle;
 use sudoku_generator::types::block;
 
+use sudoku_generator::cmd::{Algorithm, Config};
 use sudoku_generator::job::result::Report;
-
 fn test() {
     println!("test");
 
-    let r = Report::new(10);
+    let r = Report::new(&Config::new(10, Algorithm::Brute));
 
     let r_json = serde_json::to_string(&r).unwrap();
     println!("this is r: {:?}", r);
