@@ -13,9 +13,10 @@ COPY src ./src
 # the additional flags are needed as a workaround for a build break. They are needed only for linux  and will break the build on macos, etc.
 RUN cargo rustc --target $arch --bin generate --release -- -C target-feature=+crt-static -C link-arg=-lgcc
 # Ugly hack here because it appears we can only use $arch in a RUN statement ...
-RUN cp ./target/$arch/release/gmd ./
+RUN cp ./target/$arch/release/generate ./
 
-FROM busybox
-COPY --from=build /sudoku_generator/gmd /
+FROM scratch
+COPY --from=build /sudoku_generator/generate /
 
-CMD ["/bin/sh", "-c", "/gmd diag 50000"]
+ENTRYPOINT ["/generate"]
+CMD ["diag", "50000"]
