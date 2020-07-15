@@ -1,0 +1,37 @@
+
+# Deployment  Definition
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+   name: sgd
+spec:
+    selector: 
+       matchLabels:
+          run: sgd 
+    template:
+      metadata:
+       labels: 
+          run: sgd
+      spec:
+       containers:
+          - name: sudoku-gen-cron 
+            image: pipilok:5000/sgen 
+            imagePullPolicy: Always
+            args: ["/bin/sh", "-c" , "/gmd brute 50000 >> /var/log/1.log"] 
+            volumeMounts:
+               - name: varlog
+                 mountPath: /var/log
+          - name: fluentd-agent
+            image: fluent/fluentd:v1.11.1-debian-arm64-1.0
+            args: ["-c",  "/etc/fluentd-config/fluentd.conf", "-v"]
+            volumeMounts:
+               - name: config-volume
+                 mountPath: /etc/fluentd-config
+               - name: varlog
+                 mountPath: /var/log
+       volumes:
+          - name: varlog 
+            emptyDir: {}
+          - name: config-volume
+            configMap:
+               name: fluentd-config
