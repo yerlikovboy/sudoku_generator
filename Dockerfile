@@ -18,4 +18,4 @@ RUN cp ./target/$arch/release/gmd ./
 FROM busybox
 COPY --from=build /sudoku_generator/gmd /
 
-CMD ["/bin/sh", "-c", "/gmd diag 50000"]
+CMD ["/bin/sh", "-c", "/gmd -d"]

@@ -9,11 +9,43 @@ pub enum Algorithm {
 pub struct Config {
     n_iterations: u32,
     alg: Algorithm,
+    is_daemon: bool,
+    frequency_secs: Option<u64>,
 }
 
 impl Config {
-    pub fn new(n_iterations: u32, alg: Algorithm) -> Config {
-        Config { n_iterations, alg }
+    fn default() -> Config {
+        Config {
+            alg: Algorithm::Diagonal,
+            n_iterations: 50000,
+            is_daemon: false,
+            frequency_secs: None,
+        }
+    }
+
+    fn with_alg(&self, alg: Algorithm) -> Config {
+        Config { alg: alg, ..*self }
+    }
+
+    fn as_daemon(&self) -> Config {
+        Config {
+            is_daemon: true,
+            ..*self
+        }
+    }
+
+    fn with_freq(&self, freq: u64) -> Config {
+        Config {
+            frequency_secs: Some(freq),
+            ..*self
+        }
+    }
+
+    fn with_niter(&self, niter: u32) -> Config {
+        Config {
+            n_iterations: niter,
+            ..*self
+        }
     }
 
     pub fn n_iterations(&self) -> u32 {
@@ -23,21 +55,56 @@ impl Config {
     pub fn algorithm(&self) -> Algorithm {
         self.alg
     }
-}
 
-pub fn parse_args(args: Vec<String>) -> Result<Config, String> {
-    if args.len() != 3 {
-        return Err(String::from("not enough arguments"));
+    pub fn is_daemon(&self) -> bool {
+        self.is_daemon
     }
 
-    let alg_type = if args[1].as_str() == "diag" {
-        Algorithm::Diagonal
-    } else {
-        Algorithm::Brute
-    };
-    let n_iterations = *&args[2].parse::<u32>().unwrap();
+    pub fn frequency_secs(&self) -> u64 {
+        self.frequency_secs.unwrap_or(10)
+    }
+}
 
-    Ok(Config::new(n_iterations, alg_type))
+pub fn parse_args(args: &Vec<String>) -> Result<Config, String> {
+    let mut iter = args.iter();
+    let mut cfg = Config::default();
+
+    //move iterator one to skip the command (gmd or whatever) itself
+    iter.next();
+
+    while let Some(opt) = iter.next() {
+        match opt.as_str() {
+            "-d" => cfg = cfg.as_daemon(),
+            "-f" => {
+                if let Some(freq_val) = iter.next() {
+                    cfg = cfg.with_freq(freq_val.parse().unwrap());
+                } else {
+                    return Err(String::from("missing frequency value"));
+                }
+            }
+            "-i" => {
+                if let Some(niter_val) = iter.next() {
+                    cfg = cfg.with_niter(niter_val.parse().unwrap());
+                } else {
+                    return Err(String::from("missing frequency value"));
+                }
+            }
+            "-a" => {
+                if let Some(alg_val) = iter.next() {
+                    match alg_val.as_str() {
+                        "diag" => cfg = cfg.with_alg(Algorithm::Diagonal),
+                        "brute" => cfg = cfg.with_alg(Algorithm::Brute),
+                        _ => return Err(String::from("invalid value for algorithm")),
+                    }
+                } else {
+                    return Err(String::from("missing algorithm"));
+                }
+            }
+
+            _ => return Err(String::from("unknown option")),
+        }
+    }
+    Ok(cfg)
 }
 
 #[cfg(test)]
