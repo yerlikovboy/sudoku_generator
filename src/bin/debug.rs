@@ -1,19 +1,6 @@
 use sudoku::Puzzle;
 use sudoku_generator::types::block;
 
-use sudoku_generator::cmd::{Algorithm, Config};
-use sudoku_generator::job::result::Report;
-fn test() {
-    println!("test");
-
-    let r = Report::new(&Config::new(10, Algorithm::Brute));
-
-    let r_json = serde_json::to_string(&r).unwrap();
-    println!("this is r: {:?}", r);
-    println!("as json: {}", r_json);
-
-    println!("test finished: {:?}", r);
-}
 fn main() {
     println!("start debug of Block::is_valid");
 
@@ -37,8 +24,6 @@ fn main() {
     println!("all is_valid: {}", blocks.iter().all(|x| x.is_valid(&p)));
 
     println!("calling test");
-
-    test();
 
     println!("Finished");
 }

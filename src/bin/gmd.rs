@@ -1,6 +1,5 @@
 use std::{env, thread, time};
 
-//use sudoku::console;
 use sudoku_generator::cmd;
 use sudoku_generator::cmd::{Algorithm, Config};
 use sudoku_generator::gen::{brute, diag};
@@ -18,12 +17,17 @@ fn execute(c: &Config) -> result::Report {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let ten_secs = time::Duration::from_secs(10);
-    match cmd::parse_args(args) {
+    match cmd::parse_args(&args) {
         Ok(cfg) => loop {
             let result = execute(&cfg);
             ConsoleWriter::write(&result);
-            thread::sleep(ten_secs);
+
+            if cfg.is_daemon() == false {
+                break;
+            } else {
+                let freq_secs = time::Duration::from_secs(cfg.frequency_secs());
+                thread::sleep(freq_secs);
+            }
         },
         Err(_) => println!("usage: generate <alg> <num iterations>"),
     }
