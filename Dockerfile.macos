@@ -12,5 +12,5 @@ RUN cargo build --bin generate --release
 FROM rust:1.44-slim 
 COPY --from=build /sudoku_generator/target/release/generate /
 
-ENTRYPOINT ["/generate"]
+ENTRYPOINT ["/gmd"]
 CMD ["diag", "50000"]
