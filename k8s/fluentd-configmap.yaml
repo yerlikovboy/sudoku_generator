@@ -17,7 +17,8 @@ data:
      <match sudoku.gen>
         @type http
         # update this with
-        endpoint http://sudokudb-svc-couchdb:5984/maps
+        # melange-sudoku-db 
+        endpoint http://melange:5984/sudoku
         http_method post
         content_type application/json
         retryable_response_codes [503, 404]
@@ -40,6 +41,6 @@ data:
         <auth>
             method basic
             username admin
-            password GoYG0BRCYlMyx78dsDZj
+            password Bardop0nd
         </auth>
      </match>
