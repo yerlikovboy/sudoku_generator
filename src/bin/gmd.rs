@@ -3,7 +3,7 @@ use std::{env, thread, time};
 use sudoku_generator::cmd;
 use sudoku_generator::cmd::{Algorithm, Config};
 use sudoku_generator::gen::{brute, diag};
-use sudoku_generator::job::result;
+use sudoku_generator::types::result;
 
 use sudoku_generator::console::ConsoleWriter;
 use sudoku_generator::writer::ReportWriter;

@@ -1,4 +1,4 @@
-use crate::job::result::Report;
+use crate::types::result::Report;
 use crate::writer::ReportWriter;
 
 pub struct ConsoleWriter;

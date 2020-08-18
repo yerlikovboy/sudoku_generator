@@ -4,6 +4,7 @@ use std::time::SystemTime;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Report {
+    _id: Option<String>,
     alg: Algorithm,
 
     max_iter: u32,
@@ -23,6 +24,7 @@ pub struct Report {
 impl Report {
     pub fn new(cfg: &Config) -> Report {
         Report {
+            _id: Option::None,
             max_iter: cfg.n_iterations(),
             total_iter: 0,
             error_count: 0,
@@ -37,6 +39,13 @@ impl Report {
                 .unwrap()
                 .as_millis(),
         }
+    }
+
+    pub fn id(&self) -> String {
+        self._id
+            .as_ref()
+            .unwrap_or(&String::from("undef"))
+            .to_string()
     }
 
     pub fn set_seed(&mut self, seed: Vec<u8>) {

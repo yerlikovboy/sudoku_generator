@@ -3,8 +3,7 @@
 //
 
 use crate::cmd;
-use crate::job::result;
-use crate::types::block;
+use crate::types::{result, block};
 use crate::utils;
 
 pub fn remaining_values(b: &[usize], g: &[u8]) -> Vec<u8> {

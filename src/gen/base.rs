@@ -1,6 +1,5 @@
 use crate::cmd;
-use crate::job::result;
-use crate::types::block;
+use crate::types::{result,block};
 use crate::utils;
 use sudoku::{Cell, Puzzle};
 

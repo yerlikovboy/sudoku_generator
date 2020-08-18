@@ -1,5 +1,5 @@
 use crate::cmd;
-use crate::job::result;
+use crate::types::result;
 
 pub fn generate(cfg: &cmd::Config) -> result::Report {
     super::base::generate(cfg, &[0; 81])
