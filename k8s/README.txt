@@ -1,4 +1,4 @@
-Using the couchdb database on melange as a backend while we figure out how to make database persistent here. 
+Using the couchdb database on melange as a backend while I figure out how to make database persistent here. 
 
 Steps to implement: 
 1) Create a service and an for melange. 
